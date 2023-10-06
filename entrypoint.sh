@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 composer install
 composer require vimeo/psalm --dev
 composer require squizlabs/php_codesniffer --dev
