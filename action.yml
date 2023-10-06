@@ -1,0 +1,16 @@
+name: 'PHP Code Quality'
+description: 'Check code quality of php files and code'
+inputs:
+  php-ext-required:  # id of input
+    description: 'List of php extensions required'
+    required: false
+    default: ''
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+branding:
+  icon: 'check'
+  color: 'green'
