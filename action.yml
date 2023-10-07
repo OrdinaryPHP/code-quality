@@ -1,16 +1,13 @@
 name: 'PHP Code Quality'
 description: 'Check code quality of php files and code'
 inputs:
-  php-ext-required:  # id of input
-    description: 'List of php extensions required'
+  php_version:
+    description: 'PHP version to use'
     required: false
-    default: ''
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+    default: '8.2'
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: ghcr.io/ordinaryphp/code-quality:dev-php${{ inputs.php_version }}
 branding:
   icon: 'check'
   color: 'green'
