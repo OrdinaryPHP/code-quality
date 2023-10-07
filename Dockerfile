@@ -7,14 +7,21 @@ FROM composer:${INPUT_COMPOSER_VERSION} as composer
 FROM php:${INPUT_PHP_VERSION}-cli-${INPUT_LINUX_OS}
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
-RUN install-php-extensions zip
+RUN install-php-extensions zip pcntl soap xdebug pcov igbinary intl
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-COPY .phplint.yml /etc/ordinary-php/.phplint.yml
-COPY psalm.xml.dist /etc/ordinary-php/psalm.xml.dist
-COPY phpcs.xml.dist /etc/ordinary-php/phpcs.xml.dist
+WORKDIR /code-quality
 
-COPY entrypoint.sh /app/entrypoint.sh
+COPY src src
+COPY bin bin
+COPY composer.json composer.json
+COPY .phplint.yml .phplint.yml
+COPY psalm.xml.dist psalm.xml.dist
+COPY phpcs.xml.dist phpcs.xml.dist
 
-ENTRYPOINT ["/app/entrypoint.sh"]
+RUN composer validate && composer audit && composer install
+
+COPY entrypoint.sh entrypoint.sh
+
+ENTRYPOINT [ "/code-quality/entrypoint.sh" ]
