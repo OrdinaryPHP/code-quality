@@ -17,8 +17,8 @@ jobs:
 
     env:
       VERSION_TAG: ${{ github.ref_name }}-php${{ matrix.php-version }}
-      GHCR_TAG: ghcr.io/OrdinaryPHP/code-quality:$VERSION_TAG
-      DOCKER_TAG: tricyn/code-quality:$VERSION_TAG
+      GHCR_TAG: ghcr.io/OrdinaryPHP/code-quality:${{ VERSION_TAG }}
+      DOCKER_TAG: tricyn/code-quality:${{ VERSION_TAG }}
 
     steps:
       - uses: actions/checkout@main
