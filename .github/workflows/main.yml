@@ -15,26 +15,28 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      VERSION_TAG: ${{ github.ref_name }}-php${{ matrix.php-version }}
+      GHCR_TAG: ghcr.io/OrdinaryPHP/code-quality:$VERSION_TAG
+      DOCKER_TAG: tricyn/code-quality:$VERSION_TAG
+
     steps:
       - uses: actions/checkout@main
 
-      - name: Create version tag
+      - name: Display version tag
         run: |
-          export VERSION_TAG="${{ github.ref_name }}-php${{ matrix.php-version }}"
-          export GHCR_TAG="ghcr.io/OrdinaryPHP/code-quality:$VERSION_TAG"
-          export DOCKER_TAG="tricyn/code-quality:$VERSION_TAG"
           echo "Tag: $VERSION_TAG"
           echo "GHCR Tag: $GHCR_TAG"
           echo "Docker Tag: $DOCKER_TAG"
 
       - name: Build Container
-        run: "docker build --build-arg INPUT_PHP_VERSION=${{ matrix.php-version }} -t $DOCKER_TAG -t $GHCR_TAG ."
+        run: docker build --build-arg INPUT_PHP_VERSION=${{ matrix.php-version }} -t $DOCKER_TAG -t $GHCR_TAG .
 
       - name: Lint
-        run: "docker run --rm -v $GITHUB_WORKSPACE:/opt/project -w /opt/project $GHCR_TAG /code-quality/vendor/bin/phplint"
+        run: docker run --rm -v $GITHUB_WORKSPACE:/opt/project -w /opt/project $GHCR_TAG /code-quality/vendor/bin/phplint
 
       - name: Static Analysis
-        run: "docker run --rm -v $GITHUB_WORKSPACE:/opt/project -w /opt/project $GHCR_TAG /code-quality/vendor/bin/psalm"
+        run: docker run --rm -v $GITHUB_WORKSPACE:/opt/project -w /opt/project $GHCR_TAG /code-quality/vendor/bin/psalm
 
       - name: Code Style
-        run: "docker run --rm -v $GITHUB_WORKSPACE:/opt/project -w /opt/project $GHCR_TAG /code-quality/vendor/bin/phpcs"
+        run: docker run --rm -v $GITHUB_WORKSPACE:/opt/project -w /opt/project $GHCR_TAG /code-quality/vendor/bin/phpcs
