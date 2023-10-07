@@ -14,6 +14,7 @@ class InitConfig
         return $path ? ($result . '/' . $path) : $result;
     }
 
+    /** @return string[] */
     public function configFiles(): array
     {
         return [
