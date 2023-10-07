@@ -1,0 +1,40 @@
+name: "Build, test, and deploy"
+on:
+  push:
+    branches:
+      - dev
+    tags:
+      - '**'
+permissions:
+  contents: read
+jobs:
+  build:
+    strategy:
+      matrix:
+        php-version: ["8.1", "8.2"]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@main
+
+      - name: Create version tag
+        run: |
+          export VERSION_TAG="${{ github.ref_name }}-php${{ matrix.php-version }}"
+          export GHCR_TAG="ghcr.io/OrdinaryPHP/code-quality:$VERSION_TAG"
+          export DOCKER_TAG="tricyn/code-quality:$VERSION_TAG"
+          echo "Tag: $VERSION_TAG"
+          echo "GHCR Tag: $GHCR_TAG"
+          echo "Docker Tag: $DOCKER_TAG"
+
+      - name: Build Container
+        run: "docker build --build-arg INPUT_PHP_VERSION=${{ matrix.php-version }} -t $DOCKER_TAG -t $GHCR_TAG"
+
+      - name: Lint
+        run: "docker run --rm -v $GITHUB_WORKSPACE:/opt/project -w /opt/project $GHCR_TAG /code-quality/vendor/bin/phplint"
+
+      - name: Static Analysis
+        run: "docker run --rm -v $GITHUB_WORKSPACE:/opt/project -w /opt/project $GHCR_TAG /code-quality/vendor/bin/psalm"
+
+      - name: Code Style
+        run: "docker run --rm -v $GITHUB_WORKSPACE:/opt/project -w /opt/project $GHCR_TAG /code-quality/vendor/bin/phpcs"
