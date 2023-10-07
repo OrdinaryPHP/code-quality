@@ -25,7 +25,7 @@ jobs:
 
       - name: Create image tags
         run: |
-          echo "GHCR_TAG=ghcr.io/OrdinaryPHP/code-quality:$VERSION_TAG" >> $GITHUB_ENV
+          echo "GHCR_TAG=ghcr.io/ordinaryphp/code-quality:$VERSION_TAG" >> $GITHUB_ENV
           echo "DOCKER_TAG=tricyn/code-quality:$VERSION_TAG" >> $GITHUB_ENV
           echo "GHCR Tag: $GHCR_TAG"
           echo "Docker Tag: $DOCKER_TAG"
