@@ -11,7 +11,7 @@ inputs:
     default: 'dev'
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/ordinaryphp/code-quality:${{ inputs.code_quality_version }}-php${{ inputs.php_version }}'
+  image: 'docker://ghcr.io/ordinaryphp/code-quality:${{ github.event.inputs.code_quality_version }}-php${{ github.event.inputs.php_version }}'
 branding:
   icon: 'check'
   color: 'green'
