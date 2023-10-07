@@ -41,3 +41,13 @@ jobs:
 
       - name: Code Style
         run: docker run --rm -v $GITHUB_WORKSPACE:/opt/project -w /opt/project $GHCR_TAG /code-quality/vendor/bin/phpcs
+
+      - name: Login to ghcr.io
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Push to ghcr.io
+        run: docker push $GHCR_TAG
