@@ -1,0 +1,13 @@
+#!/usr/bin/env php
+<?php
+$action = $_SERVER['argv'][1] ?? null;
+
+if ($action !== 'init') {
+    fwrite(STDOUT, "Argument 1 expected to be 'init'\n");
+    exit(1);
+}
+
+require_once $_composer_autoload_path ?? (dirname(__DIR__) . '/vendor/autoload.php');
+
+$init = new \Ordinary\CodeQuality\InitConfig();
+$init->copyConfig();
