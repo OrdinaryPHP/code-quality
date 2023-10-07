@@ -1,22 +1,22 @@
 #!/bin/sh
 
-composer install
-composer require vimeo/psalm --dev
-composer require squizlabs/php_codesniffer --dev
-composer require ordinary/coding-style --dev
-composer require slevomat/coding-standard --dev
-composer require overtrue/phplint --dev
-
 for config in .phplint.yml phpcs.xml.dist psalm.xml.dist; do
   if ! [ -f "$config" ]; then
-    cp /etc/code-quality/"$config" .
+    cp /code-quality/"$config" .
   fi
 done
 
+
 if [ -f ./php-ext-require.txt ]; then
-  install-php-extensions $(cat ./php-ext-require.txt)
+  PHP_EXT_REQUIRE="$PHP_EXT_REQUIRE $(cat ./php-ext-require.txt)"
+  PHP_EXT_REQUIRE=$PHP_EXT_REQUIRE
 fi
 
-vendor/bin/phplint
-vendor/bin/psalm
-vendor/bin/phpcs
+if [ -n "$PHP_EXT_REQUIRE" ]; then
+  # shellcheck disable=SC2086
+  install-php-extensions $PHP_EXT_REQUIRE
+fi
+
+/code-quality/vendor/bin/phplint
+/code-quality/vendor/bin/psalm
+/code-quality/vendor/bin/phpcs
