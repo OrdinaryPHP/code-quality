@@ -15,16 +15,14 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    env:
-      VERSION_TAG: ${{ github.ref_name }}-php${{ matrix.php-version }}
-      GHCR_TAG: ghcr.io/OrdinaryPHP/code-quality:${{ VERSION_TAG }}
-      DOCKER_TAG: tricyn/code-quality:${{ VERSION_TAG }}
-
     steps:
       - uses: actions/checkout@main
 
-      - name: Display version tag
+      - name: Set version envs
         run: |
+          echo "VERSION_TAG=${{ github.ref_name }}-php${{ matrix.php-version }}" >> $GITHUB_ENV
+          echo "GHCR_TAG=ghcr.io/OrdinaryPHP/code-quality:$VERSION_TAG" >> $GITHUB_ENV
+          echo "DOCKER_TAG=tricyn/code-quality:$VERSION_TAG" >> $GITHUB_ENV
           echo "Tag: $VERSION_TAG"
           echo "GHCR Tag: $GHCR_TAG"
           echo "Docker Tag: $DOCKER_TAG"
