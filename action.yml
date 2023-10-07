@@ -1,17 +1,8 @@
 name: 'PHP Code Quality'
 description: 'Check code quality of php files and code'
-inputs:
-  php_version:
-    description: 'PHP version to use'
-    required: false
-    default: '8.2'
-  code_quality_version:
-    description: 'Ordinary code quality version to use'
-    required: false
-    default: 'dev'
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/ordinaryphp/code-quality:${{ github.event.inputs.code_quality_version }}-php${{ github.event.inputs.php_version }}'
+  image: 'docker://ghcr.io/ordinaryphp/code-quality:dev-php8.2'
 branding:
   icon: 'check'
   color: 'green'
