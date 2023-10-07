@@ -5,9 +5,13 @@ inputs:
     description: 'PHP version to use'
     required: false
     default: '8.2'
+  code_quality_version:
+    description: 'Ordinary code quality version to use'
+    required: false
+    default: 'dev'
 runs:
   using: 'docker'
-  image: ghcr.io/ordinaryphp/code-quality:dev-php${{ inputs.php_version }}
+  image: ghcr.io/ordinaryphp/code-quality:${{ inputs.code_quality_version }}-php${{ inputs.php_version }}
 branding:
   icon: 'check'
   color: 'green'
