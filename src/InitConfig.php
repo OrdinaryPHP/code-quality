@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Ordinary\CodeQuality;
 
 class InitConfig
@@ -7,6 +10,7 @@ class InitConfig
     {
         $result = dirname(__DIR__);
         $path = $path ? ltrim($path, '/\\') : null;
+
         return $path ? ($result . '/' . $path) : $result;
     }
 
