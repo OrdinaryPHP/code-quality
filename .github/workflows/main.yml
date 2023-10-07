@@ -18,12 +18,15 @@ jobs:
     steps:
       - uses: actions/checkout@main
 
-      - name: Set version envs
+      - name: Create version tag
         run: |
           echo "VERSION_TAG=${{ github.ref_name }}-php${{ matrix.php-version }}" >> $GITHUB_ENV
+          echo "Tag: $VERSION_TAG"
+
+      - name: Create image tags
+        run: |
           echo "GHCR_TAG=ghcr.io/OrdinaryPHP/code-quality:$VERSION_TAG" >> $GITHUB_ENV
           echo "DOCKER_TAG=tricyn/code-quality:$VERSION_TAG" >> $GITHUB_ENV
-          echo "Tag: $VERSION_TAG"
           echo "GHCR Tag: $GHCR_TAG"
           echo "Docker Tag: $DOCKER_TAG"
 
