@@ -28,7 +28,7 @@ jobs:
           echo "Docker Tag: $DOCKER_TAG"
 
       - name: Build Container
-        run: "docker build --build-arg INPUT_PHP_VERSION=${{ matrix.php-version }} -t $DOCKER_TAG -t $GHCR_TAG"
+        run: "docker build --build-arg INPUT_PHP_VERSION=${{ matrix.php-version }} -t $DOCKER_TAG -t $GHCR_TAG ."
 
       - name: Lint
         run: "docker run --rm -v $GITHUB_WORKSPACE:/opt/project -w /opt/project $GHCR_TAG /code-quality/vendor/bin/phplint"
