@@ -19,7 +19,7 @@ if [ -n "$PHP_EXT_REQUIRE" ]; then
 fi
 
 echo "Linting..."
-/code-quality/vendor/bin/phplint
+/code-quality/vendor/bin/phplint -vvv
 echo "Static analysis..."
 /code-quality/vendor/bin/psalm
 echo "Code style check..."
