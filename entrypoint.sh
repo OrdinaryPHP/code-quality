@@ -19,8 +19,8 @@ if [ -n "$PHP_EXT_REQUIRE" ]; then
 fi
 
 echo "finding files"
-find . -name '*.php' -not -path './vendor/*'
-ls -l
+find /github -name '*.php'
+ls -lA
 echo "$PWD"
 
 echo "Linting..."
