@@ -18,7 +18,10 @@ if [ -n "$PHP_EXT_REQUIRE" ]; then
   install-php-extensions $PHP_EXT_REQUIRE
 fi
 
+echo "finding files"
 find . -name '*.php' -not -path './vendor/*'
+ls -l
+echo "$PWD"
 
 echo "Linting..."
 /code-quality/vendor/bin/phplint -vvv
