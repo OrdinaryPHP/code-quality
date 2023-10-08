@@ -2,6 +2,7 @@
 
 for config in .phplint.yml phpcs.xml.dist psalm.xml.dist; do
   if ! [ -f "$config" ]; then
+    echo "Copying default config $config"
     cp /code-quality/"$config" .
   fi
 done
@@ -17,6 +18,9 @@ if [ -n "$PHP_EXT_REQUIRE" ]; then
   install-php-extensions $PHP_EXT_REQUIRE
 fi
 
+echo "Linting..."
 /code-quality/vendor/bin/phplint
+echo "Static analysis..."
 /code-quality/vendor/bin/psalm
+echo "Code style check..."
 /code-quality/vendor/bin/phpcs
