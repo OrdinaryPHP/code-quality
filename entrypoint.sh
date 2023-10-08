@@ -18,11 +18,6 @@ if [ -n "$PHP_EXT_REQUIRE" ]; then
   install-php-extensions $PHP_EXT_REQUIRE
 fi
 
-echo "finding files"
-find /github -name '*.php'
-ls -lA
-echo "$PWD"
-
 echo "Linting..."
 /code-quality/vendor/bin/phplint -vvv
 echo "Static analysis..."
