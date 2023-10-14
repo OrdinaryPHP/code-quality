@@ -35,7 +35,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
           push: true
           tags: |
             ghcr.io/${{vars.DOCKERHUB_USER}}/${{github.event.repository.name}}:${{github.ref_name}}
