@@ -1,63 +1,75 @@
 name: "Build, test, and deploy"
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 on:
   push:
     branches:
       - dev
     tags:
       - '**'
+  pull_request:
 permissions:
   contents: read
   packages: write
 jobs:
-  build:
+  build-push:
     strategy:
       matrix:
-        php-version: ["8.2"]
-
+        php-version: [ "8.2" ]
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@main
-
-      - name: Create version tag
-        run: |
-          echo "VERSION_TAG=${{ github.ref_name }}-php${{ matrix.php-version }}" >> $GITHUB_ENV
-          echo "Tag: $VERSION_TAG"
-
-      - name: Create image tags
-        run: |
-          echo "GHCR_TAG=ghcr.io/ordinaryphp/code-quality:$VERSION_TAG" >> $GITHUB_ENV
-          echo "DOCKER_TAG=tricyn/code-quality:$VERSION_TAG" >> $GITHUB_ENV
-          echo "GHCR Tag: $GHCR_TAG"
-          echo "Docker Tag: $DOCKER_TAG"
-
-      - name: Build Container
-        run: docker build --build-arg INPUT_PHP_VERSION=${{ matrix.php-version }} -t $DOCKER_TAG -t $GHCR_TAG .
-
-      - name: Lint
-        run: docker run --rm -v $GITHUB_WORKSPACE:/opt/project -w /opt/project $GHCR_TAG /code-quality/vendor/bin/phplint
-
-      - name: Static Analysis
-        run: docker run --rm -v $GITHUB_WORKSPACE:/opt/project -w /opt/project $GHCR_TAG /code-quality/vendor/bin/psalm
-
-      - name: Code Style
-        run: docker run --rm -v $GITHUB_WORKSPACE:/opt/project -w /opt/project $GHCR_TAG /code-quality/vendor/bin/phpcs
-
       - name: Login to ghcr.io
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
-
-      - name: Push to ghcr.io
-        run: docker push $GHCR_TAG
-
       - name: Login to docker hub
         uses: docker/login-action@v3
         with:
-          username: ${{secrets.DOCKER_HUB_TRICYN_USER}}
-          password: ${{secrets.DOCKER_HUB_TRICYN_KEY}}
+          username: ${{var.DOCKERHUB_USER}}
+          password: ${{secrets.DOCKERHUB_TOKEN}}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{github.repository}}:${{github.ref_name}}
+            ${{var.DOCKERHUB_USER}}/${{github.event.repository.name}}:${{github.ref_name}}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+  lint:
+    needs: [ build-push ]
+    strategy:
+      matrix:
+        php-version: [ "8.2" ]
 
-      - name: Push to docker hub
-        run: docker push $DOCKER_TAG
+    runs-on: ubuntu-latest
+    container: ghcr.io/${{github.repository}}:${{github.ref_name}}
+    steps:
+      - name: Lint
+        run: cd /code-quality && phplint
+  static-analysis:
+    needs: [ build-push ]
+    strategy:
+      matrix:
+        php-version: [ "8.2" ]
+
+    runs-on: ubuntu-latest
+    container: ghcr.io/${{github.repository}}:${{github.ref_name}}
+    steps:
+      - name: Static Analysis
+        run: cd /code-quality && psalm
+  code-style:
+    needs: [ build-push ]
+    strategy:
+      matrix:
+        php-version: [ "8.2" ]
+
+    runs-on: ubuntu-latest
+    container: ghcr.io/${{github.repository}}:${{github.ref_name}}
+    steps:
+      - name: Code Style
+        run: cd /code-quality && phpcs
