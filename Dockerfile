@@ -22,6 +22,8 @@ COPY phpcs.xml.dist phpcs.xml.dist
 
 RUN composer validate && composer audit && composer install
 
+ENV PATH="$PATH:/code-quality/bin:/code-quality/vendor/bin"
+
 COPY entrypoint.sh entrypoint.sh
 
 ENTRYPOINT [ "/code-quality/entrypoint.sh" ]
