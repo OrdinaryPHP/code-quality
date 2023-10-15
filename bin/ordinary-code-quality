@@ -7,6 +7,23 @@ if ($action !== 'init') {
     exit(1);
 }
 
+$overwrite = in_array('overwrite', $_SERVER['argv']);
+$help = in_array('help', $_SERVER['argv']);
+$scriptName = basename(__FILE__);
+
+if ($help) {
+    echo <<<HELP
+Copy default config files to current directory
+
+Usage: $scriptName init [--overwrite]
+
+    Options:
+      --overwrite) Overwrite existing config files
+
+HELP;
+    exit(0);
+}
+
 require_once $_composer_autoload_path ?? (dirname(__DIR__) . '/vendor/autoload.php');
 
 $init = new \Ordinary\CodeQuality\InitConfig();
