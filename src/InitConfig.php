@@ -28,7 +28,7 @@ class InitConfig
     {
         foreach ($this->configFiles() as $file) {
             if (!is_file($file) || $overwrite) {
-                copy($this->getPackagePath($file), $file);
+                copy($this->getPackagePath('default-quality-config/' . $file), $file);
             }
         }
     }
