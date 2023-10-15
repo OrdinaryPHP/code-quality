@@ -37,8 +37,8 @@ jobs:
         with:
           push: true
           tags: |
-            ghcr.io/${{vars.DOCKERHUB_USER}}/${{github.event.repository.name}}:${{github.ref_name}}
-            ${{vars.DOCKERHUB_USER}}/${{github.event.repository.name}}:${{github.ref_name}}
+            ghcr.io/${{vars.DOCKERHUB_USER}}/${{github.event.repository.name}}:${{github.ref_name}}-php${{matrix.php-version}}
+            ${{vars.DOCKERHUB_USER}}/${{github.event.repository.name}}:${{github.ref_name}}-php${{matrix.php-version}}
           cache-from: type=gha
           cache-to: type=gha,mode=max
   lint:
@@ -48,7 +48,7 @@ jobs:
         php-version: [ "8.2" ]
 
     runs-on: ubuntu-latest
-    container: ghcr.io/${{vars.DOCKERHUB_USER}}/${{github.event.repository.name}}:${{github.ref_name}}
+    container: ghcr.io/${{vars.DOCKERHUB_USER}}/${{github.event.repository.name}}:${{github.ref_name}}-php${{matrix.php-version}}
     steps:
       - name: Lint
         run: cd /code-quality && phplint
@@ -59,7 +59,7 @@ jobs:
         php-version: [ "8.2" ]
 
     runs-on: ubuntu-latest
-    container: ghcr.io/${{vars.DOCKERHUB_USER}}/${{github.event.repository.name}}:${{github.ref_name}}
+    container: ghcr.io/${{vars.DOCKERHUB_USER}}/${{github.event.repository.name}}:${{github.ref_name}}-php${{matrix.php-version}}
     steps:
       - name: Static Analysis
         run: cd /code-quality && psalm
@@ -70,7 +70,7 @@ jobs:
         php-version: [ "8.2" ]
 
     runs-on: ubuntu-latest
-    container: ghcr.io/${{vars.DOCKERHUB_USER}}/${{github.event.repository.name}}:${{github.ref_name}}
+    container: ghcr.io/${{vars.DOCKERHUB_USER}}/${{github.event.repository.name}}:${{github.ref_name}}-php${{matrix.php-version}}
     steps:
       - name: Code Style
         run: cd /code-quality && phpcs
