@@ -19,6 +19,7 @@ COPY composer.json composer.json
 COPY .phplint.yml .phplint.yml
 COPY psalm.xml.dist psalm.xml.dist
 COPY phpcs.xml.dist phpcs.xml.dist
+COPY default-quality-config default-quality-config
 
 RUN composer validate && composer audit && composer install
 
