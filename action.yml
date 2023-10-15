@@ -1,8 +1,0 @@
-name: 'PHP Code Quality'
-description: 'Check code quality of php files and code'
-runs:
-  using: 'docker'
-  image: 'docker://ghcr.io/ordinaryphp/code-quality:dev-php8.2'
-branding:
-  icon: 'check'
-  color: 'green'
