@@ -3,7 +3,7 @@
 $action = $_SERVER['argv'][1] ?? null;
 
 if ($action !== 'init') {
-    fwrite(STDOUT, "Argument 1 expected to be 'init'\n");
+    fwrite(\STDERR, "Argument 1 expected to be 'init'\n");
     exit(1);
 }
 
