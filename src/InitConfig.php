@@ -24,10 +24,12 @@ class InitConfig
         ];
     }
 
-    public function copyConfig(): void
+    public function copyConfig(bool $overwrite = false): void
     {
         foreach ($this->configFiles() as $file) {
-            copy($this->getPackagePath($file), $file);
+            if (!is_file($file) || $overwrite) {
+                copy($this->getPackagePath($file), $file);
+            }
         }
     }
 }

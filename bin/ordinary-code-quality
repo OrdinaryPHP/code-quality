@@ -10,4 +10,4 @@ if ($action !== 'init') {
 require_once $_composer_autoload_path ?? (dirname(__DIR__) . '/vendor/autoload.php');
 
 $init = new \Ordinary\CodeQuality\InitConfig();
-$init->copyConfig();
+$init->copyConfig($overwrite);
