@@ -8,6 +8,11 @@
             "Ordinary\\CodeQuality\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Ordinary\\CodeQuality\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "Brandon Jackson",
