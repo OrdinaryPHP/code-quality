@@ -14,10 +14,11 @@ class InitConfigTest extends TestCase
     /** @var string[] */
     private static array $dirCleanup = [];
 
-    public static function copyConfigProvider(): Generator
+    public static function tearDownAfterClass(): void
     {
-        yield [true];
-        yield [false];
+        foreach (self::$dirCleanup as $dir) {
+            passthru('rm -rf ' . escapeshellarg($dir));
+        }
     }
 
     public function testCopyConfig(): void
