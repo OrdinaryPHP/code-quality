@@ -10,7 +10,10 @@
     <!-- Rules -->
     <rule ref="Ordinary" />
 
-    <!-- Check src and tests directories -->
+    <!-- Check files and directories -->
     <file>.</file>
+    <!-- One day this will actually work (v4) -->
+    <file>./bin/ordinary-code-quality</file>
+
     <exclude-pattern>*/vendor/*</exclude-pattern>
 </ruleset>
