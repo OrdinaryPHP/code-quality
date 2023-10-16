@@ -1,15 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ordinary\CodeQuality;
 
+use Exception;
+use Generator;
 use PHPUnit\Framework\TestCase;
 use Random\Randomizer;
 
 class InitConfigTest extends TestCase
 {
+    /** @var string[] */
     private static array $dirCleanup = [];
 
-    public static function copyConfigProvider(): \Generator
+    public static function copyConfigProvider(): Generator
     {
         yield [true];
         yield [false];
@@ -53,6 +58,7 @@ class InitConfigTest extends TestCase
         self::chdir($tmpB);
 
         $config->copyConfig();
+
         foreach ($config->configFiles() as $file) {
             self::assertFileExists($file);
             self::assertFileEquals($config->getPackagePath('/default-quality-config/' . $file), $file);
@@ -62,6 +68,7 @@ class InitConfigTest extends TestCase
         self::chdir($tmpC);
 
         $config->copyConfig(true);
+
         foreach ($config->configFiles() as $file) {
             self::assertFileExists($file);
             self::assertFileEquals($config->getPackagePath('/default-quality-config/' . $file), $file);
@@ -73,7 +80,7 @@ class InitConfigTest extends TestCase
     private static function chdir(string $dir): void
     {
         if (!chdir($dir)) {
-            throw new \Exception('Failed to change directory to: ' . $dir);
+            throw new Exception('Failed to change directory to: ' . $dir);
         }
     }
 
@@ -82,15 +89,15 @@ class InitConfigTest extends TestCase
         $path = tempnam($directory, $prefix);
 
         if ($path === false) {
-            throw new \Exception('Fail to create temp file via tempnam()');
+            throw new Exception('Fail to create temp file via tempnam()');
         }
 
         if (!unlink($path)) {
-            throw new \Exception('Failed to unlink path for conversion to directory: ' . $path);
+            throw new Exception('Failed to unlink path for conversion to directory: ' . $path);
         }
 
         if (!mkdir($path, 0777, true)) {
-            throw new \Exception('Failed to temp directory: ' . $path);
+            throw new Exception('Failed to temp directory: ' . $path);
         }
 
         self::$dirCleanup[] = $path;
