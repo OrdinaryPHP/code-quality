@@ -20,6 +20,7 @@ COPY .phplint.yml .phplint.yml
 COPY psalm.xml.dist psalm.xml.dist
 COPY phpcs.xml.dist phpcs.xml.dist
 COPY phpunit.xml.dist phpunit.xml.dist
+COPY tests tests
 COPY default-quality-config default-quality-config
 
 RUN composer validate && composer audit && composer install
