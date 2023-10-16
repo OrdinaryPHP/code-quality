@@ -6,6 +6,8 @@
     <arg name="colors"/>
     <!-- Only PHP files -->
     <arg name="extensions" value="php"/>
+    <!-- Show sniff name -->
+    <arg value="s" />
 
     <!-- Rules -->
     <rule ref="Ordinary" />
