@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Ordinary\CodeQuality;
 
 use Exception;
-use Generator;
 use PHPUnit\Framework\TestCase;
 use Random\Randomizer;
 
