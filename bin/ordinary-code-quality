@@ -1,11 +1,16 @@
 #!/usr/bin/env php
 <?php
+
+declare(strict_types=1);
+
+use Ordinary\CodeQuality\InitConfig;
+
 /** @var string[] $args */
 $args = $_SERVER['argv'] ?? [];
 $action = $args[1];
 
-if($action !== 'init') {
-    fwrite(\STDERR, "Argument 1 expected to be 'init'\n");
+if ($action !== 'init') {
+    fwrite(STDERR, "Argument 1 expected to be 'init'\n");
     exit(1);
 }
 
@@ -27,7 +32,7 @@ HELP;
 }
 
 /** @psalm-suppress UnresolvableInclude */
-require_once $_composer_autoload_path ?? (dirname(__DIR__) . '/vendor/autoload.php');
+require_once $_composer_autoload_path ?? dirname(__DIR__) . '/vendor/autoload.php';
 
-$init = new \Ordinary\CodeQuality\InitConfig();
+$init = new InitConfig();
 $init->copyConfig($overwrite);
