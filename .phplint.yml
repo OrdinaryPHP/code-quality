@@ -1,4 +1,6 @@
-path: ./
+path:
+  - ./
+  - ./bin/ordinary-code-quality
 jobs: 10
 extensions:
   - php

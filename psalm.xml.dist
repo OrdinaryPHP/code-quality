@@ -12,6 +12,7 @@
     </fileExtensions>
     <projectFiles>
         <directory name="."/>
+        <file name="./bin/ordinary-code-quality" />
         <ignoreFiles>
             <directory name="vendor"/>
         </ignoreFiles>
