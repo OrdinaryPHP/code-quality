@@ -5,20 +5,13 @@ declare(strict_types=1);
 
 use Ordinary\CodeQuality\InitConfig;
 
-/** @var string[] $args */
-$args = $_SERVER['argv'] ?? [];
-$action = $args[1];
+// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+$argsSet = array_fill_keys($_SERVER['argv'] ?? [], true);
 
-if ($action !== 'init') {
-    fwrite(STDERR, "Argument 1 expected to be 'init'\n");
-    exit(1);
-}
-
-$overwrite = in_array('overwrite', $args);
-$help = in_array('help', $args);
-$scriptName = basename(__FILE__);
+$help = isset($argsSet['--help']) || isset($argsSet['-h']);
 
 if ($help) {
+    $scriptName = basename(__FILE__);
     echo <<<HELP
 Copy default config files to current directory
 
@@ -30,6 +23,10 @@ Usage: $scriptName init [--overwrite]
 HELP;
     exit(0);
 }
+
+$init = isset($argsSet['init']);
+
+$overwrite = isset($argsSet['--overwrite']);
 
 /** @psalm-suppress UnresolvableInclude */
 require_once $_composer_autoload_path ?? dirname(__DIR__) . '/vendor/autoload.php';
