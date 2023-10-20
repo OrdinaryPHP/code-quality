@@ -6,7 +6,7 @@ FROM composer:${INPUT_COMPOSER_VERSION} as composer
 
 FROM php:${INPUT_PHP_VERSION}-cli-${INPUT_LINUX_OS}
 
-RUN apk update && apk add zip 7zip
+RUN apk update && apk add zip 7zip git
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions zip pcntl soap xdebug pcov igbinary intl
