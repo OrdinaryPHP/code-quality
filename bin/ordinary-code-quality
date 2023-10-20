@@ -8,10 +8,9 @@ use Ordinary\CodeQuality\InitConfig;
 // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
 $argsSet = array_fill_keys($_SERVER['argv'] ?? [], true);
 
-function showHelp(): string
-{
-    $scriptName = basename(__FILE__);
-    return <<<HELP
+$scriptName = basename(__FILE__);
+
+$helpScreen = <<<HELP
 Copy default config files to current directory
 
 Usage: $scriptName init [--overwrite]
@@ -20,19 +19,18 @@ Usage: $scriptName init [--overwrite]
       --overwrite) Overwrite existing config files
 
 HELP;
-}
 
 $help = isset($argsSet['--help']) || isset($argsSet['-h']);
 
 if ($help) {
-    echo showHelp();
+    echo $helpScreen;
     exit(0);
 }
 
 $init = isset($argsSet['init']);
 
 if (!$init) {
-    fwrite(\STDERR, "Error: Missing required arg 1 (init)\n" . showHelp() . "\n");
+    fwrite(STDERR, "Error: Missing required arg 1 (init)\n" . $helpScreen . "\n");
     exit(1);
 }
 
