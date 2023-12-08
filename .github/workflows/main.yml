@@ -17,3 +17,4 @@ jobs:
     uses: ./.github/workflows/build-push-test.yml
     with:
       php-version: "8.2"
+    secrets: inherit
