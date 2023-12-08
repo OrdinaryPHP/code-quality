@@ -8,6 +8,9 @@ on:
       - dev
     tags:
       - '**'
+permissions:
+  contents: read
+  packages: write
 jobs:
   build-push:
     strategy:
