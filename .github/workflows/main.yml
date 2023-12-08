@@ -62,6 +62,10 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: Code Quality
+        uses: ./.github/workflows/code-quality.yml
+        with:
+          image: ${{steps.ghcrtag.outputs.GHCR_TAG}}
     outputs:
       ghcr-tag: ${{steps.ghcrtag.outputs.GHCR_TAG}}
   lint:

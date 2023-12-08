@@ -1,0 +1,39 @@
+name: "Code Quality & Unit Testing"
+on:
+  workflow_call:
+    inputs:
+      image:
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    container: ${{ inputs.image }}
+    steps:
+      - name: Lint
+        run: cd /code-quality && phplint
+  static-analysis:
+    runs-on: ubuntu-latest
+    container: ${{ inputs.image }}
+    steps:
+      - name: Static Analysis
+        run: cd /code-quality && psalm
+  code-style:
+    runs-on: ubuntu-latest
+    container: ${{ inputs.image }}
+    steps:
+      - name: Copy bin files with php extension
+        run: |
+          for f in /code-quality/bin/*; do
+            cp "$f" "$f.php"
+          done
+      - name: Code Style
+        run: cd /code-quality && phpcs
+  unit-tests:
+    runs-on: ubuntu-latest
+    container: ${{ inputs.image }}
+    steps:
+      - name: Unit Tests
+        run: cd /code-quality && phpunit
