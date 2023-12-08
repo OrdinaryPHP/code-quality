@@ -14,7 +14,10 @@ permissions:
   packages: write
 jobs:
   build-push:
+    strategy:
+      matrix:
+        php-version: [ "8.2", "8.3" ]
     uses: ./.github/workflows/build-push-test.yml
     with:
-      php-version: "8.2"
+      php-version: ${{matrix.php-version}}
     secrets: inherit
