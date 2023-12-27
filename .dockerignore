@@ -2,4 +2,4 @@
 .gitignore
 .github
 .dockerignore
-action.yaml
+action.yml
