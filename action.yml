@@ -24,7 +24,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: ./.github/workflows/lib-testing-and-quality.yaml
+    - uses: ordinaryphp/code-quality/.github/workflows/lib-testing-and-quality.yaml@dev
       with:
         ocq_version: ${{ inputs.ocq_version }}
         php_version: ${{ inputs.php_version }}
