@@ -1,0 +1,70 @@
+name: "Code Quality & Unit Testing"
+on:
+  workflow_call:
+    inputs:
+      ocq_version:
+        type: string
+        description: "ordinary/code-quality image version number"
+        default: "branch-dev"
+      php_version:
+        type: string
+        description: "PHP version to use for testing"
+        default: "8.3"
+      lint:
+        type: boolean
+        default: true
+      static_analysis:
+        type: boolean
+        default: true
+      code_style:
+        type: boolean
+        default: true
+      unit_test:
+        type: boolean
+        default: true
+env:
+  ocqImage: ghcr.io/ordinaryphp/code-quality:${{ inputs.ocq_version }}-php${{ inputs.php_version }}
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    container: ghcr.io/ordinaryphp/code-quality:${{ inputs.ocq_version }}-php${{ inputs.php_version }}
+    steps:
+      - name: Versions
+        run: |
+          echo "Image: $ocqImage"
+          php --version
+          composer --version
+      - uses: actions/checkout@main
+      - name: Composer Validate
+        run: composer validate --no-interaction -vvv
+      - name: Composer Install
+        run: composer install --no-interaction --optimize-autoloader -v
+      - name: Lint
+        if: '${{ !cancelled() && inputs.lint }}'
+        run: phplint
+      - name: Static Analysis
+        if: '${{ !cancelled() && inputs.static_analysis }}'
+        run: psalm
+      - name: Copy bin files with php extension
+        if: '${{ !cancelled() && inputs.code_style }}'
+        run: |
+          for f in /code-quality/bin/*; do
+            if [ -f "$f" ]; then
+              cp "$f" "$f.php"
+            fi
+          done
+      - name: Code Style
+        if: '${{ !cancelled() && inputs.code_style }}'
+        run: phpcs
+  unit-tests:
+    if: ${{ inputs.unit_test }}
+    runs-on: ubuntu-latest
+    container: ghcr.io/ordinaryphp/code-quality:${{ inputs.ocq_version }}-php${{ inputs.php_version }}
+    steps:
+      - uses: actions/checkout@main
+      - name: Composer Install
+        if: ${{ hashFiles('tests/') != '' }}
+        run: composer install --no-interaction --optimize-autoloader --no-dev
+      - name: Unit Tests
+        if: ${{ hashFiles('tests/') != '' }}
+        run: phpunit

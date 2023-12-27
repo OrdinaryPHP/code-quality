@@ -1,0 +1,34 @@
+name: 'Code Quality'
+description: 'Greet someone'
+inputs:
+  ocq_version:
+    type: string
+    description: "ordinary/code-quality image version string"
+    default: "branch-dev"
+  php_version:
+    type: string
+    description: "PHP version to use for testing"
+    default: "8.3"
+  lint:
+    type: boolean
+    default: true
+  static_analysis:
+    type: boolean
+    default: true
+  code_style:
+    type: boolean
+    default: true
+  unit_test:
+    type: boolean
+    default: true
+runs:
+  using: "composite"
+  steps:
+    - uses: ./.github/workflows/lib-testing-and-quality.yaml@dev
+      with:
+        ocq_version: ${{ inputs.ocq_version }}
+        php_version: ${{ inputs.php_version }}
+        lint: ${{ inputs.lint }}
+        static_analysis: ${{ inputs.static_analysis }}
+        code_style: ${{ inputs.code_style }}
+        unit_test: ${{ inputs.unit_test }}
