@@ -1,3 +1,4 @@
+name: Create Release / Pre-Release Test
 on:
   pull_request:
     branches:
