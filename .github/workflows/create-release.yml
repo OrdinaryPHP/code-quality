@@ -4,8 +4,6 @@ on:
     branches:
       - main
     types:
-      - labeled
-      - unlabeled
       - opened
       - closed
       - reopened
@@ -13,8 +11,17 @@ on:
 permissions:
   contents: write
 jobs:
-  job1:
+  create-release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@main
-      - uses: ordinaryphp/cicd-semver-release@v0.1.0
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_KEY }}
+      - name: Create Release
+        uses: ordinaryphp/cicd-semver-release@v0.3.0
+        with:
+          token: ${{ steps.generate_token.outputs.token }}
