@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 export CI=true
 
 echo "Running Tests (Github):"
