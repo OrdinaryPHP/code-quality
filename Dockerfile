@@ -38,4 +38,4 @@ ENV TARGET_TEST_SUITE=""
 
 WORKDIR /mnt/project
 
-ENTRYPOINT [ "/workdir/entrypoint.sh" ]
+ENTRYPOINT [ "/code-quality/entrypoint.sh" ]
