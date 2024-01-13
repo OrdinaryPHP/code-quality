@@ -24,7 +24,18 @@ COPY phpcs.xml.dist phpcs.xml.dist
 COPY phpunit.xml.dist phpunit.xml.dist
 COPY tests tests
 COPY default-quality-config default-quality-config
+COPY entrypoint.sh entrypoint.sh
 
 RUN composer validate && composer audit && composer install
 
 ENV PATH="$PATH:/code-quality/bin:/code-quality/vendor/bin"
+
+ENV RUN_LINT="true"
+ENV RUN_STATIC_ANALYSIS="true"
+ENV RUN_CODE_STYLE="true"
+ENV RUN_UNIT_TESTS="true"
+ENV TARGET_TEST_SUITE=""
+
+WORKDIR /mnt/project
+
+ENTRYPOINT [ "/workdir/entrypoint.sh" ]
