@@ -25,7 +25,7 @@ if [ -f composer.json ]; then
   qSuccess+=$?
 fi
 
-ordinary-code-quality --init
+ordinary-code-quality init
 
 if [ "$RUN_LINT" == "true" ]; then
   phplint
