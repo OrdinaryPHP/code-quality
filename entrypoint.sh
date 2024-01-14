@@ -28,29 +28,40 @@ fi
 ordinary-code-quality init
 
 if [ "$RUN_LINT" == "true" ]; then
+  echo "Running lint (phplint)..."
   phplint
   qSuccess+=$?
 fi
 
 if [ "$RUN_STATIC_ANALYSIS" == "true" ]; then
+  echo "Running static analysis (psalm)..."
   psalm
   qSuccess+=$?
 fi
 
 if [ "$RUN_CODE_STYLE" == "true" ]; then
+  echo "Running code style checks (phpcs)..."
   phpcs
   qSuccess+=$?
 fi
 
 if [ "$RUN_UNIT_TESTS" == "true" ]; then
+  echo "Running unit tests (phpunit)..."
   runPhpUnit=(phpunit)
 
   if [ -n "$TARGET_TEST_SUITE" ]; then
+    echo "  Testsuite: $TARGET_TEST_SUITE"
     runPhpUnit+=(--testsuite "$TARGET_TEST_SUITE")
   fi
 
   "${runPhpUnit[@]}"
   qSuccess+=$?
+fi
+
+if [ $qSuccess -eq 0 ]; then
+  echo "Code Quality Tests: Complete"
+else
+  echo "Code Quality Tests: Failed"
 fi
 
 exit $qSuccess
