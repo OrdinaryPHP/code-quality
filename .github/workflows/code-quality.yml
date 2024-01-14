@@ -11,7 +11,7 @@ jobs:
   code-quality:
     runs-on: ubuntu-latest
     steps:
-      - uses: action/checkout@main
+      - uses: actions/checkout@main
       - uses: ordinaryphp/code-quality-action@initial
         with:
           version: branch-add-entrypoint
