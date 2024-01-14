@@ -2,7 +2,7 @@
 
 export CI=true
 
-echo "Running Tests (Github):"
+echo "Running Tests (image):"
 echo "  Lint: $RUN_LINT"
 echo "  Static Analysis: $RUN_STATIC_ANALYSIS"
 echo "  Code Style: $RUN_CODE_STYLE"
