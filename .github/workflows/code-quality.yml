@@ -9,7 +9,9 @@ permissions:
   contents: read
 jobs:
   code-quality:
-    uses: ordinaryphp/code-quality-action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ordinaryphp/code-quality-action
   lint:
     runs-on: ubuntu-latest
     container: ${{ inputs.image }}
