@@ -8,6 +8,8 @@ on:
 permissions:
   contents: read
 jobs:
+  code-quality:
+    uses: ordinaryphp/code-quality-action
   lint:
     runs-on: ubuntu-latest
     container: ${{ inputs.image }}
