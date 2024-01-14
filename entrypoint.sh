@@ -30,19 +30,39 @@ ordinary-code-quality init
 if [ "$RUN_LINT" == "true" ]; then
   echo "Running lint (phplint)..."
   phplint
-  qSuccess+=$?
+  lintSuccess=$?
+  qSuccess+=$lintSuccess
+
+  if [ $lintSuccess -eq 0 ]; then
+    echo "Linting: Succeeded"
+  else
+    echo "Linting: Failed"
+  fi
 fi
 
 if [ "$RUN_STATIC_ANALYSIS" == "true" ]; then
   echo "Running static analysis (psalm)..."
   psalm
-  qSuccess+=$?
+  analysisSuccess=$?
+  qSuccess+=$analysisSuccess
+
+  if [ $analysisSuccess -eq 0 ]; then
+    echo "Static Analysis: Succeeded"
+  else
+    echo "Static Analysis: Failed"
+  fi
 fi
 
 if [ "$RUN_CODE_STYLE" == "true" ]; then
   echo "Running code style checks (phpcs)..."
   phpcs
-  qSuccess+=$?
+  styleSuccess=$?
+  qSuccess+=$styleSuccess
+  if [ $styleSuccess -eq 0 ]; then
+    echo "Code Style Check: Succeeded"
+  else
+    echo "Code Style Check: Failed"
+  fi
 fi
 
 if [ "$RUN_UNIT_TESTS" == "true" ]; then
@@ -55,11 +75,18 @@ if [ "$RUN_UNIT_TESTS" == "true" ]; then
   fi
 
   "${runPhpUnit[@]}"
-  qSuccess+=$?
+  unitTestSuccess=$?
+  qSuccess+=$unitTestSuccess
+
+  if [ $unitTestSuccess -eq 0 ]; then
+    echo "Unit Tests: Succeeded"
+  else
+    echo "Unit Tests: Failed"
+  fi
 fi
 
 if [ $qSuccess -eq 0 ]; then
-  echo "Code Quality Tests: Complete"
+  echo "Code Quality Tests: Succeeded"
 else
   echo "Code Quality Tests: Failed"
 fi
