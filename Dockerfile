@@ -6,10 +6,12 @@ FROM composer:${COMPOSER_VERSION} as composer
 
 FROM php:${PHP_VERSION}-cli-${LINUX_OS}
 
-ENV COMPOSER_HOME=$HOME/.composer
+ENV COMPOSER_HOME=/root/.composer
+
+RUN mkdir "$COMPOSER_HOME"
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
-COPY --from=composer /tmp/keys.* $COMPOSER_HOME
+COPY --from=composer /tmp/keys.* $COMPOSER_HOME/
 
 RUN apk update && apk add ca-certificates zip 7zip git bash
 
