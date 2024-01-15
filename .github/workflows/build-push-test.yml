@@ -30,7 +30,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
           flavor: |
-            suffix=-php${{inputs.php-version}}
+            suffix=-php${{inputs.php-version}},onlatest=true
       - name: Get ghcr.io first tag
         id: ghcrtag
         run: echo "GHCR_TAG=$(echo "$DOCKER_METADATA_OUTPUT_TAGS" | grep sha-long- | grep ^ghcr.io/)" >> "$GITHUB_OUTPUT"
