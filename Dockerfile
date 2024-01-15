@@ -6,9 +6,8 @@ FROM composer:${COMPOSER_VERSION} as composer
 
 FROM php:${PHP_VERSION}-cli-${LINUX_OS}
 
-ENV COMPOSER_HOME=/root/.composer
-
-RUN mkdir "$COMPOSER_HOME"
+ENV COMPOSER_HOME=/code-quality
+WORKDIR /code-quality
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 COPY --from=composer /tmp/keys.* $COMPOSER_HOME/
@@ -17,8 +16,6 @@ RUN apk update && apk add ca-certificates zip 7zip git bash
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions zip pcntl soap xdebug pcov igbinary intl
-
-WORKDIR /code-quality
 
 COPY src src
 COPY bin bin
@@ -31,7 +28,7 @@ COPY tests tests
 COPY default-quality-config default-quality-config
 COPY entrypoint.sh entrypoint.sh
 
-RUN composer validate && composer audit && composer global install
+RUN composer validate && composer audit && composer install
 
 ENV PATH="$PATH:/code-quality/bin:/code-quality/vendor/bin"
 
