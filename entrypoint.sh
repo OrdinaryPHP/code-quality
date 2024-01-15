@@ -21,7 +21,7 @@ qSuccess=0
 if [ -f composer.json ]; then
   composer validate -vvv
   qSuccess+=$?
-  composer install --no-dev
+  composer global install --no-dev
   qSuccess+=$?
 fi
 

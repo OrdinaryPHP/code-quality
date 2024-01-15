@@ -31,7 +31,7 @@ COPY tests tests
 COPY default-quality-config default-quality-config
 COPY entrypoint.sh entrypoint.sh
 
-RUN composer validate && composer audit && composer install
+RUN composer validate && composer audit && composer global install
 
 ENV PATH="$PATH:/code-quality/bin:/code-quality/vendor/bin"
 
