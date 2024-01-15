@@ -42,7 +42,7 @@ fi
 
 if [ "$RUN_STATIC_ANALYSIS" == "true" ]; then
   echo "Running static analysis (psalm)..."
-  psalm
+  psalm --root "$COMPOSER_HOME"
   analysisSuccess=$?
   qSuccess+=$analysisSuccess
 
