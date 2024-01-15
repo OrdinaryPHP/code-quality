@@ -6,8 +6,9 @@ FROM composer:${COMPOSER_VERSION} as composer
 
 FROM php:${PHP_VERSION}-cli-${LINUX_OS}
 
-ENV COMPOSER_HOME=/code-quality
-WORKDIR /code-quality
+ENV COMPOSER_HOME=/root/.composer
+
+RUN mkdir "$COMPOSER_HOME"
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 COPY --from=composer /tmp/keys.* $COMPOSER_HOME/
@@ -16,6 +17,8 @@ RUN apk update && apk add ca-certificates zip 7zip git bash
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions zip pcntl soap xdebug pcov igbinary intl
+
+WORKDIR /code-quality
 
 COPY src src
 COPY bin bin

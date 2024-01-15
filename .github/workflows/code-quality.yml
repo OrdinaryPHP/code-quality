@@ -8,13 +8,6 @@ on:
 permissions:
   contents: read
 jobs:
-  code-quality:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@main
-      - uses: ordinaryphp/code-quality-action@initial
-        with:
-          version: branch-add-entrypoint
   lint:
     runs-on: ubuntu-latest
     container: ${{ inputs.image }}

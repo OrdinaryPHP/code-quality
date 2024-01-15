@@ -21,7 +21,7 @@ qSuccess=0
 if [ -f composer.json ]; then
   composer validate -vvv
   qSuccess+=$?
-  composer global install --no-dev
+  composer install --no-dev
   qSuccess+=$?
 fi
 
@@ -42,7 +42,7 @@ fi
 
 if [ "$RUN_STATIC_ANALYSIS" == "true" ]; then
   echo "Running static analysis (psalm)..."
-  psalm --root "$COMPOSER_HOME"
+  psalm
   analysisSuccess=$?
   qSuccess+=$analysisSuccess
 
