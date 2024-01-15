@@ -14,5 +14,13 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     steps:
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_KEY }}
       - uses: actions/checkout@main
       - uses: ordinaryphp/cicd-semver-release@v0.3.0
+        with:
+          token: ${{ steps.generate_token.outputs.token }}
